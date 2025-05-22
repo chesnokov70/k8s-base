@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod-php
+spec:
+  containers:
+    -  name: php-container
+       image: chesnokov70/k8s-php
+       ports:
+         - containerPort: 80

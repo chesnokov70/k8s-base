@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: my-app  # match
+  strategy:
+    rollingUpdate:
+      maxSurge: 1  # we can use % too
+      maxUnavailable: 1
+    type: RollingUpdate  # Recreate
+  template:
+    metadata:
+      labels:
+        app: my-app  # match
+    spec: 
+      containers:
+        - name: nginx
+          image: nginx            
+          ports:
+            - containerPort: 80
+          readinessProbe: 
+            failureThreshold: 3 # 3 times to restart
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 10
+            successThreshold: 1
+            timeoutSeconds: 1
+          livenessProbe: 
+            failureThreshold: 3  # 3 times to restart
+            httpGet:   # we can use exec and tcp socket
+              path: /
+              port: 80
+            periodSeconds: 10  # check every 10 sec
+            successThreshold: 1  # reset count of testing to 0 
+            timeoutSeconds: 1  # timeout
+            initialDelaySeconds: 10  # delay before start livenessProbe
+          startupProbe: # control seccess start our app
+            failureThreshold: 30
+            httpGet:
+              path: /
+              port: 80
+            periodSeconds: 10                
+          resources:
+            requests:
+              cpu: 50m
+              memory: 100Mi
+            limits:
+              cpu: 100m
+              memory: 100Mi
+
+

@@ -1,0 +1,25 @@
+apiVersion: apps/v1
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchLabels: 
+      app: my-app  # match
+  template:
+    metadata:
+      labels:
+        app: my-app  # match
+    spec: 
+      containers:
+        - name: debian
+          image: debian:jessie
+          command: ["sh", "-c"]
+          args:
+            - while true; do echo "Hello, ${USERNAME}, how are you doing?"; sleep 2; done
+          env: 
+            - name: USERNAME
+              value: Sergei
+          ports: 
+            - containerPort: 80

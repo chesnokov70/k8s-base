@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: PersistentVolumeClame
+meladata:
+  name: fileshare
+spec:
+  storageClassName: local-storage
+  accessModes:
+    - ReadWriteMany # or ReadWrightOnes
+  resources:
+    requests:
+      storage: 1Gi # disk size

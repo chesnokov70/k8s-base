@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: my-pod
+  labels:
+    app: my-app
+spec:
+  containers:
+  - name: hello-container
+    image: busybox:latest
+    command: ["sh", "-c"]
+    args:
+    - while true; do echo "New random number is $(((RANDOM % 100) + 1))"; sleep 2; done
+    ports:
+      - containerPort: 80
